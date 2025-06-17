@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import { MailOutlined, LockOutlined ,KeyOutlined} from '@ant-design/icons';
+import {  Button } from 'antd';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ForgotPasswordModal from '../modals/ForgotPasswordModal';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -11,6 +13,7 @@ const LoginPage = () => {
   const [touched, setTouched] = useState({ email: false, password: false });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+   const [showModal, setShowModal] = useState(false);
 
   const isEmailValid = /\S+@\S+\.\S+/.test(form.email);
   const isPasswordValid = form.password.length >= 6;
@@ -100,6 +103,21 @@ const LoginPage = () => {
               <p className="mt-1 text-sm text-red-500">Password must be at least 6 characters</p>
             )}
           </div>
+ {/* Forgot Password Link */}
+      <div className="mt-3 text-right">
+        <Button
+          type="primary"
+          onClick={() => setShowModal(true)}
+          className="text-base font-semibold bg-red-400"
+        >
+          Forgot password?
+        </Button>
+      </div>
+
+      {/* Render Modal */}
+      {showModal && (
+        <ForgotPasswordModal visible={showModal} onClose={() => setShowModal(false)} />
+      )}
 
           {/* Submit Button */}
           <div>

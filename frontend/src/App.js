@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import ViewLicenses from './pages/ViewLicenses';
 import Tickets from './pages/Tickets';
 import CreateLicense from './pages/CreateLicense';
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/create-license" element={<CreateLicense />} />
         <Route path="/view-licenses" element={<ViewLicenses />} />
         <Route path="/tickets" element={<Tickets />} />
+        <Route path='/reset-password' element= {<ResetPassword />} />
       </Routes>
     </Router>
   );
