@@ -11,7 +11,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const name = localStorage.getItem('name') || 'User';
+  const name = localStorage.getItem('name') ;
   const token = localStorage.getItem('token');
 
   const fetchRecentTickets = async () => {
@@ -30,8 +30,16 @@ const HomePage = () => {
     }
   };
 
+  
+
   useEffect(() => {
-    fetchRecentTickets();
+
+    if(token == null) {
+      navigate('/login')
+    } else{
+       fetchRecentTickets();
+    }
+   
   }, []);
 
   const columns = [

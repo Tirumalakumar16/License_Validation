@@ -1,3 +1,4 @@
+// ✅ ForgotPasswordModal.jsx
 import React, { useState } from 'react';
 import { Button, Modal, Input } from 'antd';
 import axios from 'axios';
@@ -5,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { MailOutlined } from '@ant-design/icons';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ForgotPasswordModal = () => {
+const ForgotPasswordModal = ({ trigger }) => {
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -38,14 +39,8 @@ const ForgotPasswordModal = () => {
   return (
     <>
       <ToastContainer />
-      <div className="mt-3 text-right">
-        <Button
-          type="primary"
-          onClick={() => setVisible(true)}
-          className="text-base font-semibold bg-red-400"
-        >
-          Forgot password?
-        </Button>
+      <div onClick={() => setVisible(true)}>
+        {trigger}
       </div>
 
       <Modal

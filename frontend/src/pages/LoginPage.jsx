@@ -104,20 +104,20 @@ const LoginPage = () => {
             )}
           </div>
  {/* Forgot Password Link */}
-      <div className="mt-3 text-right">
-        <Button
-          type="primary"
-          onClick={() => setShowModal(true)}
-          className="text-base font-semibold bg-red-400"
-        >
-          Forgot password?
-        </Button>
-      </div>
+<div className="mt-3 text-right">
+  <ForgotPasswordModal
+    trigger={
+      <Button
+        type="primary"
+        className="text-base font-semibold bg-red-400"
+      >
+        Forgot password?
+      </Button>
+    }
+  />
+</div>
 
-      {/* Render Modal */}
-      {showModal && (
-        <ForgotPasswordModal visible={showModal} onClose={() => setShowModal(false)} />
-      )}
+      
 
           {/* Submit Button */}
           <div>
@@ -130,6 +130,8 @@ const LoginPage = () => {
             </button>
           </div>
         </form>
+ 
+       
       </div>
     </div>
   );

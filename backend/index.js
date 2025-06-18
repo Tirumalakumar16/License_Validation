@@ -32,9 +32,9 @@ app.use('/api/license',authMiddleware,licenseRoutes)
 app.use('/api/phone',licenseRoutes)
 app.use('/api/ticket',ticketRoutes)
 
+ 
 
-
-const PORT = process.env.SERVER_PORT;
+const PORT = process.env.SERVER_PORT ;
 
 const startServer = async () => {
   await connectDB(); // ✅ Logs "MySQL Database connected..."
