@@ -74,7 +74,7 @@ async function raiseTicket(req, res) {
       </div>
 
       <p style="font-size: 15px; color: #374151; margin-bottom: 16px;">
-        You’ll receive a follow-up email once your issue has been reviewed or resolved. Our goal is to address all inquiries within 24–48 hours.
+        You’ll receive a follow-up email once your issue has been reviewed and resolved. Our goal is to address all inquiries within 24–48 hours.
       </p>
 
       <p style="font-size: 14px; color: #6b7280;">Submitted on: <strong>${new Date().toLocaleString()}</strong></p>
@@ -165,9 +165,9 @@ async function resolveTicket(req, res) {
     });
 
    const htmlContent = `
-  <div style="font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 30px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
+ <div style="font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 30px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
     <div style="background-color: #1d4ed8; padding: 16px 24px; border-radius: 8px 8px 0 0; color: white;">
-      <h2 style="margin: 0; font-size: 20px;">🎫 Ticket Resolution Confirmation</h2>
+      <h2 style="margin: 0; font-size: 20px; text-align: center; font-weight: bold;">🎫 Ticket Resolved</h2>
     </div>
     <div style="background-color: white; padding: 24px; border-radius: 0 0 8px 8px;">
       <p style="font-size: 16px; color: #111827; margin-bottom: 12px;">
@@ -176,6 +176,9 @@ async function resolveTicket(req, res) {
 
       <p style="font-size: 15px; color: #374151; margin-bottom: 16px;">
         We’re reaching out to confirm that your support ticket related to the license key below has been successfully resolved:
+      </p>
+      <p style="font-size: 18px; font-weight : bold; color: #09c913; margin-bottom: 16px;">
+        You can now activate This License Key in your new Device.
       </p>
 
       <div style="background-color: #f0f9ff; padding: 12px 20px; border-left: 4px solid #2563eb; margin-bottom: 20px;">

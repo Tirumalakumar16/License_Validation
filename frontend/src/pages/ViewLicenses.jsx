@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const ViewLicense = () => {
   const [licenses, setLicenses] = useState([]);
@@ -12,6 +13,7 @@ const ViewLicense = () => {
   const [loading, setLoading] = useState(false);
   const licensesPerPage = 9;
 
+  const navigate = useNavigate()
   const token = localStorage.getItem('token');
 
   const fetchLicenses = async () => {
@@ -30,9 +32,13 @@ const ViewLicense = () => {
     }
   };
 
-  useEffect(() => {
-    fetchLicenses();
-  }, []);
+   useEffect(()=>{
+          if(token == null){
+            navigate('/login')
+          } else {
+            fetchLicenses();
+          }
+        },[])
 
   const handleAssign = async () => {
     try {
@@ -43,17 +49,21 @@ const ViewLicense = () => {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-
+      
+      console.log(res);
+      
       if (res.data.success) {
         toast.success(`Assigned to ${assignModal.name}`, { position: 'top-center' });
         setAssignModal({ show: false, licenseKey: '', name: '', email: '' });
         fetchLicenses();
+      } else {
+        toast.error(res.data.message)
       }
     } catch (error) {
-      toast.error('Assignment failed');
+      toast.error(`License Key Already Assigned to :${assignModal.email}`);
     }
-  };
-
+  }; 
+ 
   const filteredLicenses = licenses.filter(lic => {
     const status = lic.assigned_status === 1 ? '1' : '0';
     const statusMatch = filter === 'all' || filter === status;

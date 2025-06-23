@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
@@ -9,6 +9,12 @@ const ResetPassword = () => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const token = params.get('token');
+
+  useEffect(()=>{
+    if(token == null) {
+    navigate('/login')
+  }
+  },[])
 
   const [form, setForm] = useState({ newPassword: '', confirmPassword: '' });
   const [touched, setTouched] = useState({});
@@ -47,13 +53,13 @@ const ResetPassword = () => {
         toast.success('Password reset successfully!', { position: 'top-center' });
         setTimeout(() => navigate('/login'), 2000);
       } else {
-        toast.error(response.data.message || 'Reset failed', { position: 'top-center' });
+        toast.error(response.data.message || 'Reset failed Please confirm with valid token...', { position: 'top-center' });
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Reset failed', { position: 'top-center' });
+      toast.error(err.response?.data?.message || 'Reset failed Please confirm with valid token...', { position: 'top-center' });
     } finally {
       setLoading(false);
-    }
+    } 
   };
 
   return (

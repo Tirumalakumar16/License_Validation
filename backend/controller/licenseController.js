@@ -71,14 +71,14 @@ async function assignLicense(req, res) {
     }
 
     // Send email
-    const htmlContent = `
+   const htmlContent = `
   <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;">
     <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 20px;">
       <h2 style="color: #1a73e8; text-align: center;">🔐 Practical Infosec License Assigned</h2>
       <p style="font-size: 16px;">Dear <strong>${name}</strong>,</p>
       
       <p style="font-size: 15px; line-height: 1.6;">
-        We are pleased to inform you that a license key has been assigned to you and Use these credentials to use mobile APK for Penetrating Testing. Please find the details below and keep them secure for your records.
+        We are pleased to inform you that a license key has been assigned to you for using the <strong>Practical Infosec Mobile APK</strong> for penetration testing training. Please find the details below and ensure they are kept secure:
       </p>
 
       <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 15px;">
@@ -96,24 +96,40 @@ async function assignLicense(req, res) {
         </tr>
       </table>
 
+      <div style="margin-top: 30px; text-align: center;">
+        <a href="https://practicalinfosec.com/downloadFiles/Apps/practicalinfosec-v2.apk"
+           style="display: inline-block; padding: 12px 24px; background-color: #1d4ed8; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 6px; cursor: pointer;"
+           >
+          📲 Download Mobile APK
+        </a>
+      </div>
+
       <p style="font-size: 15px; margin-top: 25px;">
-        Please keep this license key confidential and do not share it with unauthorized users. It may be required for product activation or validation in the near future.
+        Please do not share this APK or license key with anyone else. It is intended for your use only in our penetration testing labs and mobile simulations.
       </p>
 
-      <p style="font-size: 15px;">Regards,<br/><strong>Practical Infosec Team</strong></p>
+      <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;" />
+
+      <p style="font-size: 15px; color: #111827; margin-top: 20px;">
+        Kind regards,<br/>
+        <span style="color: #2563eb; font-weight: 600;">Practical Infosec Support Team</span><br/>
+        <a href="https://practicalinfosec.com" style="color: #1d4ed8; text-decoration: none;">https://practicalinfosec.com</a>
+      </p>
 
       <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;" />
       <p style="font-size: 13px; color: #999; text-align: center;">
-        This is an automated message. Please do not reply directly to this email.
+        This is an automated message. Please do not reply directly to this email. For support, contact us via our helpdesk.
       </p>
     </div>
   </div>
 `;
 
+
     await sendLicenseEmail(
       assigned_to,
       'Your License Key For Mobile APK - Practical Infosec',
       htmlContent
+      
     );
 
     res.status(200).json({ success: true, message: 'License assigned and email sent', assignedName: name });
@@ -178,9 +194,44 @@ async function validate(req, res) {
 }
 
 
+async function checkDeviceId (req, res) {
+  const { device_id } = req.body;
+
+  if (!device_id) {
+    return res.status(400).json({ success: false, message: 'Device ID is required' });
+  }
+
+  try {
+
+    const connection = db.pool();
+    const [rows] = await connection.execute('SELECT * FROM licenses WHERE device_id = ?', [device_id]);
+
+    if (rows.length > 0) {
+      return res.status(200).json({
+        success: true,
+        message: 'Device ID exists in the system',
+       
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: 'Device ID not found in licenses table',
+      });
+    }
+  } catch (error) {
+    console.error('Database error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while checking device ID',
+    });
+  }
+};
+
+
 module.exports = {
     createLicenseKey,
     assignLicense,
     getAllLicenses,
-    validate
+    validate,
+    checkDeviceId
 }

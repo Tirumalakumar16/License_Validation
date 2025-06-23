@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect }from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,11 +9,13 @@ const CreateLicense = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
-  if (!token) {
-    navigate('/login');
-    return null;
-  }
+ 
 
+  useEffect(()=>{
+      if(token == null){
+        navigate('/login')
+      }
+    },[])
   const handleCreateLicense = async () => {
     try {
       const response = await axios.post(

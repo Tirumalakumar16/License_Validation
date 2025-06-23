@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CheckCircleOutlined, ExclamationCircleOutlined, MailOutlined, UserOutlined, ToolOutlined, DesktopOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const ViewTickets = () => {
   const [tickets, setTickets] = useState([]);
@@ -12,6 +13,8 @@ const ViewTickets = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const ticketsPerPage = 9;
   const token = localStorage.getItem('token');
+
+  const navigate = useNavigate();
 
   const fetchTickets = async () => {
     try {
@@ -29,9 +32,15 @@ const ViewTickets = () => {
     }
   };
 
-  useEffect(() => {
-    fetchTickets();
-  }, []);
+  useEffect(()=>{
+        if(token == null){
+          navigate('/login')
+        } else {
+          fetchTickets();
+        }
+      },[])
+
+
 
   const handleResolve = async (licenseKey) => {
     try {

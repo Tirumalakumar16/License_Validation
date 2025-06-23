@@ -1,6 +1,9 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+
+
+
 const sendLicenseEmail = async (to, subject, htmlContent) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -15,6 +18,7 @@ const sendLicenseEmail = async (to, subject, htmlContent) => {
     to,
     subject,
     html: htmlContent,
+    
   });
 };
 

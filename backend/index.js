@@ -31,7 +31,6 @@ app.use('/api/license',authMiddleware,licenseRoutes)
 
 app.use('/api/phone',licenseRoutes)
 app.use('/api/ticket',ticketRoutes)
-
  
 
 const PORT = process.env.SERVER_PORT ;
@@ -41,7 +40,7 @@ const startServer = async () => {
   await initUserTable();
   await initCreateLicenseTable();
   await initCreateTicketTable();
-  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`🚀 Server running on port : ${PORT}`));
    
 };
 

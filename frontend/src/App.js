@@ -10,6 +10,7 @@ import ViewLicenses from './pages/ViewLicenses';
 import Tickets from './pages/Tickets';
 import CreateLicense from './pages/CreateLicense';
 import ResetPassword from './pages/ResetPassword'
+import OtpVerification from './pages/OtpVerification';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/view-licenses" element={<ViewLicenses />} />
         <Route path="/tickets" element={<Tickets />} />
         <Route path='/reset-password' element= {<ResetPassword />} />
+        <Route path='/verify-otp' element= {<OtpVerification />} />
       </Routes>
     </Router>
   );

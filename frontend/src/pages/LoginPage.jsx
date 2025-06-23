@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MailOutlined, LockOutlined ,KeyOutlined} from '@ant-design/icons';
+import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import {  Button } from 'antd';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
@@ -13,7 +13,7 @@ const LoginPage = () => {
   const [touched, setTouched] = useState({ email: false, password: false });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-   const [showModal, setShowModal] = useState(false);
+   
 
   const isEmailValid = /\S+@\S+\.\S+/.test(form.email);
   const isPasswordValid = form.password.length >= 6;
@@ -33,16 +33,17 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/login`, form);
-      if (response.data.success) {
-        localStorage.setItem('token', response.data.JWT_Token);
-        localStorage.setItem('name', response.data.name);
-        toast.success('Login successful!', { position: 'top-center' });
-        setTimeout(() => navigate('/'), 1500);
+      console.log(response);
+      
+      if (response.data.success) {  
+        localStorage.setItem('tempToken', response.data.token); // Save for OTP step
+        toast.success('OTP sent to your email', { position: 'top-center' });
+        navigate('/verify-otp');
       } else {
         toast.error('Invalid email or password', { position: 'top-center' });
       }
     } catch (err) {
-      toast.error('Login failed. Please try again.', { position: 'top-center' });
+      toast.error('Login failed. Invalid email or password.', { position: 'top-center' });
     } finally {
       setLoading(false);
     }
@@ -53,7 +54,7 @@ const LoginPage = () => {
       <ToastContainer />
       <div className="w-full max-w-lg p-10 bg-white shadow-2xl rounded-xl">
         <h2 className="mb-6 text-3xl font-extrabold text-center text-gray-800">
-          🔐 Login to <span className="text-blue-600 whitespace-nowrap">Practical Infosec</span>
+          Login<span className="text-blue-600 whitespace-nowrap"></span>
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">

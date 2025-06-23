@@ -44,23 +44,24 @@ const ForgotPasswordModal = ({ trigger }) => {
       </div>
 
       <Modal
-        title="🔐 Reset Password"
-        open={visible}
-        onCancel={() => setVisible(false)}
-        onOk={handleReset}
-        okText="Send Reset Link"
-        confirmLoading={submitting}
-        okButtonProps={{ disabled: !isEmailValid }}
-      >
-        <label className="block mb-2 text-sm font-semibold text-gray-700">Email</label>
-        <Input
-          prefix={<MailOutlined />}
-          type="email"
-          placeholder="Enter your registered email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </Modal>
+  title="🔐 Reset Password"
+  open={visible}
+  centered
+  onCancel={() => setVisible(false)}
+  onOk={handleReset}
+  okText="Send Reset Link"
+  confirmLoading={submitting}
+  okButtonProps={{ disabled: !isEmailValid }}
+>
+  <label className="block mb-2 text-sm font-semibold text-gray-700">Email</label>
+  <Input
+    prefix={<MailOutlined />}
+    type="email"
+    placeholder="Enter your registered email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+  />
+</Modal>
     </>
   );
 };
