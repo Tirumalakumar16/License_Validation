@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const db = require('../config/db'); // connection pool
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
-const nodemailer = require('nodemailer');
+const sendLicenseEmail = require('../utils/sendEmail');
 
 
 async function createUser(req, res) {
@@ -111,11 +111,7 @@ async function loginUser(req, res) {
     const otp = generateOTP();
     await connection.execute("UPDATE users SET otp = ? WHERE email = ?", [otp, email]);
 
-    // Send OTP via email
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-    });
+    
 
     const htmlContent = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f9fafb; padding: 24px; border-radius: 10px; max-width: 600px; margin: auto;">
@@ -154,12 +150,14 @@ async function loginUser(req, res) {
   </div>
 `;
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: '🔐 Your Login OTP - Practical Infosec',
-      html: htmlContent,
-    });
+    
+
+     await sendLicenseEmail(
+          email,
+          '🔐 Your Login OTP - Practical Infosec',
+          htmlContent
+          
+        );
 
     // Issue temp token (not full auth yet)
     const tempToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '5m' });
@@ -189,11 +187,7 @@ async function resendOtp (req, res){
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   await connection.query("UPDATE users SET otp = ? WHERE email = ?", [otp, email]);
 
-  // Send OTP via email
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-    });
+  
 
     const htmlContent = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f9fafb; padding: 24px; border-radius: 10px; max-width: 600px; margin: auto;">
@@ -232,12 +226,14 @@ async function resendOtp (req, res){
   </div>
 `;
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: '🔐 Your Resend Login OTP - Practical Infosec',
-      html: htmlContent,
-    });
+   
+
+await sendLicenseEmail(
+          email,
+          '🔐 Your Resend Login OTP - Practical Infosec',
+          htmlContent
+          
+        );
 
   res.json({ success: true, message: "OTP sent to your email" });
 }
@@ -308,13 +304,7 @@ async function sendPasswordResetLink(req, res) {
 
     const resetLink = `http://localhost:3000/reset-password?token=${token}`;
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+   
     // console.log(token);
     // console.log(resetLink);
     // console.log(user);
@@ -354,12 +344,13 @@ async function sendPasswordResetLink(req, res) {
   </div>
 `;
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: '🔐 Reset Your Password - Practical Infosec',
-      html: htmlContent
-    });
+
+   await sendLicenseEmail(
+          email,
+          '🔐 Reset Your Password - Practical Infosec',
+          htmlContent
+          
+        );
 
     return res.json({ success: true, message: 'Reset link sent to your email.' });
 
@@ -414,13 +405,7 @@ async function resetPassword(req, res){
       email,
     ]);
 
-    const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+  
 
 const htmlContent = `
   <div style="font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 30px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); text-align: center;">
@@ -436,12 +421,14 @@ const htmlContent = `
   </div>
 `;
 
-await transporter.sendMail({
-  from: `"Practical Infosec" <${process.env.EMAIL_USER}>`,
-  to: email,
-  subject: '🔐 Password Reset Confirmation',
-  html: htmlContent,
-});
+
+
+  await sendLicenseEmail(
+          email,
+          '🔐 Password Reset Confirmation',
+          htmlContent
+          
+        );
 
     return res.status(200).json({ success: true, message: 'Password has been reset successfully' });
   } catch (err) {

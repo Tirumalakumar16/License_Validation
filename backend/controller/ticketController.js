@@ -1,6 +1,6 @@
 
 const db = require('../config/db');
-const nodemailer = require('nodemailer');
+const sendLicenseTicketEmail = require('../utils/sendEmail');
 
 
 
@@ -43,14 +43,7 @@ async function raiseTicket(req, res) {
       [licenseKey, name, assigned_to, reason, device_id]
     );
 
-     // 4. Send email
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+  
 
    const htmlContent = `
   <div style="font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 30px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
@@ -86,16 +79,23 @@ async function raiseTicket(req, res) {
         <span style="color: #2563eb; font-weight: 600;">Practical Infosec Support Team</span><br/>
         <a href="https://practicalinfosec.com" style="color: #1d4ed8; text-decoration: none;">https://practicalinfosec.com</a>
       </p>
+    
+      <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;" />
+      <p style="font-size: 13px; color: #999; text-align: center;">
+        This is an automated message. Please do not reply directly to this email. For support, contact us via our email:support@practicalinfosec.com.
+      </p>
     </div>
   </div>
 `;
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_FROM,
-      to: assigned_to,
-      subject: '🎫 Ticket Created Successfully - Practical Infosec Support',
-      html: htmlContent
-    });
+    
+
+    await sendLicenseTicketEmail(
+          assigned_to,
+          '🎫 Ticket Created Successfully - Practical Infosec Support',
+          htmlContent
+          
+        );
 
     return res.json({ success: true, message: 'Ticket raised successfully.' });
 
@@ -155,14 +155,14 @@ async function resolveTicket(req, res) {
       [resolved_by, license_key]
     );
 
-    // 4. Send email
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+    // // 4. Send email
+    // const transporter = nodemailer.createTransport({
+    //   service: 'gmail',
+    //   auth: {
+    //     user: process.env.EMAIL_USER,
+    //     pass: process.env.EMAIL_PASS
+    //   }
+    // });
 
    const htmlContent = `
  <div style="font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 30px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
@@ -204,16 +204,22 @@ async function resolveTicket(req, res) {
         <span style="color: #2563eb; font-weight: 600;">Practical Infosec Support Team</span><br/>
         <a href="https://practicalinfosec.com" style="color: #1d4ed8; text-decoration: none;">https://practicalinfosec.com</a>
       </p>
+      
+      <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;" />
+      <p style="font-size: 13px; color: #999; text-align: center;">
+        This is an automated message. Please do not reply directly to this email. For support, contact us via our email:support@practicalinfosec.com.
+      </p>
     </div>
   </div>
 `;
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_FROM,
-      to: license.assigned_to,
-      subject: '🎫 Ticket Resolved - Practical Infosec',
-      html: htmlContent
-    });
+   
+
+    await sendLicenseTicketEmail(
+          license.assigned_to,
+          '🎫 Ticket Resolved - Practical Infosec support',
+          htmlContent
+        );
 
     return res.json({ success: true, message: 'Ticket resolved and email sent.' });
   } catch (err) {

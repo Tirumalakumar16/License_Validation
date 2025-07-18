@@ -118,7 +118,7 @@ async function assignLicense(req, res) {
 
       <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;" />
       <p style="font-size: 13px; color: #999; text-align: center;">
-        This is an automated message. Please do not reply directly to this email. For support, contact us via our helpdesk.
+        This is an automated message. Please do not reply directly to this email. For support, contact us via our email:support@practicalinfosec.com.
       </p>
     </div>
   </div>
