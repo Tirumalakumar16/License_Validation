@@ -1,5 +1,5 @@
-import  { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import  { useEffect, useState  } from 'react';
+import { useNavigate  } from 'react-router-dom';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import {  Button } from 'antd';
 import axios from 'axios';
@@ -14,6 +14,14 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
    
+   const token = localStorage.getItem('token');
+    useEffect(() => {
+  
+      if(token != null) {
+        navigate('/')
+      } 
+     
+    }, []);
 
   const isEmailValid = /\S+@\S+\.\S+/.test(form.email);
   const isPasswordValid = form.password.length >= 6;
@@ -25,6 +33,9 @@ const LoginPage = () => {
   const handleBlur = (e) => {
     setTouched({ ...touched, [e.target.name]: true });
   };
+  
+
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();

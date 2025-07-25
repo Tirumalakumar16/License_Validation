@@ -97,7 +97,7 @@ async function assignLicense(req, res) {
       </table>
 
       <div style="margin-top: 30px; text-align: center;">
-        <a href="https://practicalinfosec.com/downloadFiles/Apps/practicalinfosec-v2.apk"
+        <a href="https://practicalinfosec.com/downloadFiles/Apps/practicalinfosec_bank-v1.1.apk"
            style="display: inline-block; padding: 12px 24px; background-color: #1d4ed8; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 6px; cursor: pointer;"
            >
           📲 Download Mobile APK
