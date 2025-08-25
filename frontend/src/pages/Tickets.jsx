@@ -4,6 +4,20 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CheckCircleOutlined, ExclamationCircleOutlined, MailOutlined, UserOutlined, ToolOutlined, DesktopOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import {
+
+  
+  
+  
+  MobileOutlined,
+  CalendarOutlined,
+  ClockCircleOutlined,
+  
+  
+  IdcardOutlined,
+  TagOutlined,
+  TeamOutlined
+} from "@ant-design/icons";
 
 const ViewTickets = () => {
   const [tickets, setTickets] = useState([]);
@@ -95,41 +109,114 @@ const ViewTickets = () => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {currentTickets.map(ticket => (
-              <div key={ticket.id} className="p-5 transition-transform transform bg-white shadow-md rounded-xl hover:shadow-xl hover:-translate-y-1">
-                <h2 className="mb-2 text-lg font-bold text-blue-600"><ToolOutlined /> {ticket.license_key}</h2>
-                <p><UserOutlined className="mr-1" /><strong>Name:</strong> {ticket.name}</p>
-                <p><MailOutlined className="mr-1" /><strong>Email:</strong> {ticket.email}</p>
-                <p><DesktopOutlined className="mr-1" /><strong>Device ID:</strong> {ticket.device_id}</p>
-                <p><strong>Reason:</strong> {ticket.reason}</p>
-                <p><strong>Status:</strong>
-                  <span className={`ml-2 px-2 py-1 text-white text-sm rounded ${ticket.resolve_status ? 'bg-green-600' : 'bg-yellow-500'}`}>
-                    {ticket.resolve_status ? 'Resolved' : 'Unresolved'}
-                  </span>
-                </p>
-                <p><strong>Resolved By:</strong> {ticket.resolved_by || '-'}</p>
-                <p className="text-sm text-gray-500">Created: {ticket.created_at}</p>
-                <p className="text-sm text-gray-500">Updated: {ticket.updated_at}</p>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+  {currentTickets.map(ticket => (
+    <div
+      key={ticket.id}
+      className="p-6 transition-all duration-300 transform bg-white border border-gray-100 shadow-lg rounded-2xl hover:shadow-2xl hover:-translate-y-1"
+    >
+      {/* License Key */}
+      <h2 className="flex items-center mb-4 text-lg font-bold text-blue-600">
+        <ToolOutlined className="mr-2 text-blue-500" /> 
+        {ticket.license_key}
+      </h2>
 
-                {ticket.resolve_status ? (
-                  <button
-                    disabled
-                    className="w-full py-2 mt-4 font-bold text-white bg-green-600 rounded-lg cursor-not-allowed"
-                  >
-                    <CheckCircleOutlined /> Resolved
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleResolve(ticket.license_key)}
-                    className="w-full py-2 mt-4 font-bold text-white bg-red-600 rounded-lg hover:bg-red-700"
-                  >
-                    <ExclamationCircleOutlined  /> Resolve
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
+      {/* Info Section */}
+      <div className="space-y-2 text-sm text-gray-700">
+        <p className="flex items-center">
+          <UserOutlined className="mr-2 text-indigo-500" />
+          <strong className="mr-1">Name:</strong> {ticket.name || "-"}
+        </p>
+        <p className="flex items-center">
+          <MailOutlined className="mr-2 text-pink-500" />
+          <strong className="mr-1">Email:</strong> {ticket.email || "-"}
+        </p>
+        <p className="flex items-center">
+          <IdcardOutlined className="mr-2 text-teal-500" />
+          <strong className="mr-1">Device ID:</strong> {ticket.device_id || "-"}
+        </p>
+
+        {/* Type Badge */}
+        <p className="flex items-center">
+          <TagOutlined className="mr-2 text-yellow-500" />
+          <strong className="mr-1">Type:</strong>
+          <span
+            className={`inline-flex items-center ml-2 px-3 py-1 text-xs rounded-full font-medium shadow-sm ${
+              ticket.type === "DESKTOP"
+                ? "bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-700 border border-indigo-300"
+                : ticket.type === "MOBILE"
+                ? "bg-gradient-to-r from-pink-100 to-pink-200 text-pink-700 border border-pink-300"
+                : "bg-gray-100 text-gray-600 border border-gray-300"
+            }`}
+          >
+            {ticket.type === "DESKTOP" && (
+              <DesktopOutlined className="mr-1" />
+            )}
+            {ticket.type === "MOBILE" && (
+              <MobileOutlined className="mr-1" />
+            )}
+            {ticket.type || "-"}
+          </span>
+        </p>
+
+        <p className="flex items-center">
+          <ExclamationCircleOutlined className="mr-2 text-red-500" />
+          <strong className="mr-1">Reason:</strong> {ticket.reason || "-"}
+        </p>
+
+        {/* Status Badge */}
+        <p className="flex items-center">
+          <TeamOutlined className="mr-2 text-green-500" />
+          <strong className="mr-1">Status:</strong>
+          <span
+            className={`ml-2 px-3 py-1 text-xs rounded-full font-medium shadow-sm ${
+              ticket.resolve_status
+                ? "bg-green-100 text-green-700 border border-green-300"
+                : "bg-yellow-100 text-yellow-700 border border-yellow-300"
+            }`}
+          >
+            {ticket.resolve_status ? "Resolved" : "Unresolved"}
+          </span>
+        </p>
+
+        <p className="flex items-center">
+          <UserOutlined className="mr-2 text-purple-500" />
+          <strong className="mr-1">Resolved By:</strong> {ticket.resolved_by || "-"}
+        </p>
+
+        {/* Timeline Style Dates */}
+        <div className="mt-3 space-y-1 text-xs text-gray-500">
+          <p className="flex items-center">
+            <CalendarOutlined className="mr-2 text-gray-400" /> 
+            Created: {ticket.created_at}
+          </p>
+          <p className="flex items-center">
+            <ClockCircleOutlined className="mr-2 text-gray-400" /> 
+            Updated: {ticket.updated_at}
+          </p>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      {ticket.resolve_status ? (
+        <button
+          disabled
+          className="flex items-center justify-center w-full py-2 mt-5 font-semibold text-white bg-green-500 rounded-lg cursor-not-allowed"
+        >
+          <CheckCircleOutlined className="mr-2" /> Resolved
+        </button>
+      ) : (
+        <button
+          onClick={() => handleResolve(ticket.license_key)}
+          className="flex items-center justify-center w-full py-2 mt-5 font-semibold text-white transition duration-300 bg-red-600 rounded-lg hover:bg-red-700 hover:scale-105"
+        >
+          <ExclamationCircleOutlined className="mr-2" /> Resolve
+        </button>
+      )}
+    </div>
+  ))}
+</div>
+
 
           <div className="flex justify-center mt-8 space-x-2">
             {Array.from({ length: totalPages }, (_, index) => (

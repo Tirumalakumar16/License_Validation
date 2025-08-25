@@ -30,6 +30,7 @@ app.use('/api/user',userRoutes)
 app.use('/api/license',authMiddleware,licenseRoutes)
 
 app.use('/api/phone',licenseRoutes)
+app.use('/api/desktop',licenseRoutes)
 app.use('/api/ticket',ticketRoutes)
  
 

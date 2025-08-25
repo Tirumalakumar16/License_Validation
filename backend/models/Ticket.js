@@ -14,6 +14,7 @@ async function initCreateTicketTable() {
       email VARCHAR(200) NOT NULL , 
       reason VARCHAR(255) NOT NULL,
       device_id VARCHAR(100) NOT NULL,
+      type VARCHAR(100) NOT NULL,
       resolve_status BOOLEAN DEFAULT FALSE,
       resolved_by VARCHAR(100),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

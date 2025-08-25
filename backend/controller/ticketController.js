@@ -22,7 +22,7 @@ async function raiseTicket(req, res) {
 
     // Step 1: Check if licenseKey exists in licenses table
     const [licenseRows] = await connection.query(
-      'SELECT name, assigned_to, device_id FROM licenses WHERE license_key = ?',
+      'SELECT name, assigned_to, device_id ,type FROM licenses WHERE license_key = ?',
       [licenseKey]
     );
 
@@ -30,7 +30,7 @@ async function raiseTicket(req, res) {
       return res.status(404).json({ success: false, message: 'License key not found.' });
     }
 
-    const { name, assigned_to, device_id } = licenseRows[0];
+    const { name, assigned_to, device_id, type } = licenseRows[0];
 
     if(email != assigned_to) {
       return res.status(400).json({ success: false, message: 'EmailId is not found.' });
@@ -38,9 +38,9 @@ async function raiseTicket(req, res) {
 
     // Step 2: Insert new ticket
     await connection.query(
-      `INSERT INTO tickets (license_key, name, email, reason, device_id)
-       VALUES (?, ?, ?, ?, ?)`,
-      [licenseKey, name, assigned_to, reason, device_id]
+      `INSERT INTO tickets (license_key, name, email, reason, device_id, type)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [licenseKey, name, assigned_to, reason, device_id,type]
     );
 
   
@@ -64,6 +64,7 @@ async function raiseTicket(req, res) {
         <p style="margin: 0; font-size: 14px; color: #4b5563;"><strong>Email:</strong> ${assigned_to}</p>
         <p style="margin: 0; font-size: 14px; color: #4b5563;"><strong>Device ID:</strong> ${device_id}</p>
         <p style="margin: 0; font-size: 14px; color: #4b5563;"><strong>Reason:</strong> ${reason}</p>
+         <p style="margin: 0; font-size: 14px; color: #4b5563;"><strong>Device ID:</strong> ${type}</p>
       </div>
 
       <p style="font-size: 15px; color: #374151; margin-bottom: 16px;">
@@ -87,6 +88,8 @@ async function raiseTicket(req, res) {
     </div>
   </div>
 `;
+
+
 
     
 
