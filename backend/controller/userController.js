@@ -1,12 +1,12 @@
 const bcrypt = require('bcryptjs');
 const db = require('../config/db'); // connection pool
 const jwt = require('jsonwebtoken');
-require("dotenv").config();
+// require("dotenv").config();
 const sendLicenseEmail = require('../utils/sendEmail');
 
 
 async function createUser(req, res) {
-  let { name, email, username, password, role } = req.body;
+  let { name, email, password, role } = req.body;
 
 
   
@@ -26,12 +26,6 @@ async function createUser(req, res) {
     });
   }
 
-  if (!username ||  username.length < 3) {
-    return res.status(400).json({
-      success: false,
-      message: "Username is required and length should be >3",
-    });
-  }
 
   if (!password || password.length < 6) {
     return res.status(400).json({
@@ -43,16 +37,16 @@ async function createUser(req, res) {
   try {
     const connection = db.pool();
 
-    // Check for existing email or username
+    // Check for existing email 
     const [existing] = await connection.execute(
-      'SELECT * FROM users WHERE email = ? OR username = ?',
-      [email, username]
+      'SELECT * FROM users WHERE email = ? ',
+      [email]
     );
 
     if (existing.length > 0) {
       return res.status(400).json({
         success: false,
-        message: "Email or username already exists",
+        message: "Email  already exists",
       });
     }
 
@@ -64,9 +58,9 @@ async function createUser(req, res) {
 
     // Insert into DB
     const [result] = await connection.execute(
-      `INSERT INTO users (name, email, username, password, role) 
-       VALUES (?, ?, ?, ?, ?)`,
-      [name, email, username, hashedPassword, role]
+      `INSERT INTO users (name, email, password, role) 
+       VALUES (?, ?, ?, ?)`,
+      [name, email, hashedPassword, role]
     );
 
     return res.status(201).json({
