@@ -11,10 +11,10 @@ COPY . .
 EXPOSE 1626
 
 ENV SERVER_PORT=1626 \
-    DB_HOST=vuln-mysql \
+    DB_HOST=license-mysql \
     DB_USER=root \
     DB_PORT=3306 \
-    DB_PASSWORD= \
+    DB_PASSWORD=password \
     DB_NAME=practicalinfosec_license \
     RESEND_API_KEY='re_X35Dj2W7_DfxNhTomNkQ7wBfUYQB2jo8z' \
     JWT_SECRET="SuperStrongkey$wasusedtoprocted@^*Thecode7jhsdkjnreferThis@!asCode546fghf%^$$$$"

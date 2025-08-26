@@ -296,7 +296,7 @@ async function sendPasswordResetLink(req, res) {
       { expiresIn: '15m' }
     );
 
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    const resetLink = `http://validate.practicalinfoseclabs.com/reset-password?token=${token}`;
 
    
     // console.log(token);
